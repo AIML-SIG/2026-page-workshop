@@ -2,15 +2,6 @@
   "name": "R, Python & Julia Development",
   "image": "mcr.microsoft.com/devcontainers/universal:2",
   
-  "features": {
-    "ghcr.io/rocker-org/devcontainer-features/r-apt:latest": {
-      "version": "latest"
-    },
-    "ghcr.io/julia-actions/julia-devcontainer-feature/julia:1": {
-      "version": "latest"
-    }
-  },
-
   "customizations": {
     "vscode": {
       "extensions": [
@@ -25,12 +16,12 @@
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/python/current/bin/python",
         "python.formatting.provider": "black",
-        "julia.executablePath": "/usr/local/julia/bin/julia"
+        "julia.executablePath": "/usr/bin/julia"
       }
     }
   },
 
-  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postCreateCommand": "bash .devcontainer/install-julia.sh && bash .devcontainer/setup.sh",
 
   "remoteUser": "codespace"
 }

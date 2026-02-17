@@ -29,14 +29,18 @@ RUN python3 -m venv /opt/venv \
 ENV PATH="/opt/venv/bin:${PATH}"
 
 # Optionally install R packages at build time via the `R_PACKAGES` build-arg (comma-separated)
-ARG R_PACKAGES=""
+ARG R_PACKAGES="ggplot2,dplyr"
 ENV R_PACKAGES="$R_PACKAGES"
 RUN if [ -n "$R_PACKAGES" ]; then \
       R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); pkgs <- strsplit(Sys.getenv('R_PACKAGES'), ',')[[1]]; install.packages(trimws(pkgs), dependencies=TRUE)"; \
     fi
 
-# Install common Julia packages
-RUN julia -e 'using Pkg; Pkg.add(["IJulia", "CSV"]); Pkg.precompile()' || true
+# Install common Julia packages (optionally via the `JULIA_PACKAGES` build-arg)
+ARG JULIA_PACKAGES="CSV"
+ENV JULIA_PACKAGES="$JULIA_PACKAGES"
+RUN if [ -n "$JULIA_PACKAGES" ]; then \
+            julia -e 'using Pkg; try Pkg.Registry.add(Pkg.RegistrySpec(url="https://github.com/JuliaRegistries/General.git")) catch end; pkgs = split(ENV["JULIA_PACKAGES"], ","); for p in pkgs; pn = strip(p); if pn != ""; Pkg.add(pn); end; end; Pkg.precompile()'; \
+        fi
 
 # Create a writable R library directory for non-root users
 RUN mkdir -p /home/vscode/R && chmod 0777 /home/vscode/R || true

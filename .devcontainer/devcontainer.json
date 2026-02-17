@@ -1,8 +1,6 @@
 {
   "name": "R, Python & Julia Development",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "image": "ghcr.io/aiml-sig/2026-page-workshop:latest",
   
   "customizations": {
     "vscode": {
@@ -16,14 +14,10 @@
         "quarto.quarto"
       ],
       "settings": {
-        "python.defaultInterpreterPath": "/usr/local/python/current/bin/python",
+        "python.defaultInterpreterPath": "/opt/venv/bin/python",
         "python.formatting.provider": "black",
-        "julia.executablePath": "/usr/bin/julia"
+        "julia.executablePath": "/usr/local/bin/julia"
       }
     }
-  },
-
-  "postCreateCommand": "bash .devcontainer/install-julia.sh && bash .devcontainer/setup.sh",
-
-  "remoteUser": "codespace"
+  }
 }

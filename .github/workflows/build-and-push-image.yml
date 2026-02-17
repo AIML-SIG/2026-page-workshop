@@ -3,6 +3,9 @@ name: Build and publish devcontainer image
 on:
   push:
     branches: [ main ]
+    paths:
+      - '.devcontainer/**'
+      - '.github/workflows/build-and-push-image.yml'
   workflow_dispatch: {}
 
 jobs:

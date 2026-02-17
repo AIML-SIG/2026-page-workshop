@@ -36,6 +36,6 @@ jobs:
         context: .
         file: .devcontainer/Dockerfile
         push: true
-        tags: ghcr.io/${{ github.repository_owner }}/2026-page-workshop:latest
+        tags: ghcr.io/${{ toLower(github.repository_owner) }}/2026-page-workshop:latest
         build-args: |
           R_PACKAGES=tidyverse,rmarkdown,devtools,knitr

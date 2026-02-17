@@ -1,6 +1,8 @@
 {
   "name": "R, Python & Julia Development",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   
   "customizations": {
     "vscode": {

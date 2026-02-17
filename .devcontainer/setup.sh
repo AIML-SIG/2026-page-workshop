@@ -1,27 +1,24 @@
 #!/bin/bash
 set -e
 
+# Add R project Ubuntu repository for newer R version
+echo "Adding R repository..."
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 2>&1 | grep -v "Warning"
+sudo sh -c 'echo "deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/" > /etc/apt/sources.list.d/r-ubuntu.list'
+
 # Update package lists (ignore gpg warnings from unsigned repos)
-apt-get update -o APT::Get::AllowUnauthenticated=true || true
+sudo apt-get update -o APT::Get::AllowUnauthenticated=true || true
 
 # Install R
 echo "Installing R..."
-apt-get install -y --no-install-recommends r-base r-base-dev
+sudo apt-get install -y --no-install-recommends r-base r-base-dev
+
+# Clean old R packages from previous installation
+echo "Cleaning old R packages..."
+sudo rm -rf /usr/local/lib/R/site-library
 
 # Install R packages
 echo "Installing R packages..."
-R -e "install.packages(c('tidyverse', 'ggplot2', 'rmarkdown', 'devtools', 'IRkernel', 'knitr'), repos='https://cloud.r-project.org/')"
-R -e "IRkernel::installspec(user = FALSE)"
-
-# Install Python packages
-echo "Installing Python packages..."
-pip install --upgrade pip
-pip install numpy pandas scipy matplotlib seaborn scikit-learn statsmodels jupyter jupyterlab ipywidgets
-
-# Install Julia packages (Julia installed by install-julia.sh)
-if command -v julia &> /dev/null; then
-    echo "Installing Julia packages..."
-    julia -e 'using Pkg; Pkg.add(["IJulia", "Plots", "StatsPlots", "DataFrames", "CSV", "Statistics", "Distributions"])'
-fi
+sudo R -e "install.packages(c('ggplot2'), repos='https://cloud.r-project.org/')"
 
 echo "Setup complete!"

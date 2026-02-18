@@ -43,6 +43,10 @@ RUN wget -q https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-${JULIA_
     && ln -s /opt/julia/bin/julia /usr/local/bin/julia \
     && rm julia-${JULIA_VERSION}-linux-x86_64.tar.gz
 
+# Use a shared Julia depot so packages/registries installed at build time are available to non-root users
+ENV JULIA_DEPOT_PATH=/usr/local/share/julia
+RUN mkdir -p ${JULIA_DEPOT_PATH} && chmod -R 0777 ${JULIA_DEPOT_PATH}
+
 # Install common Julia packages (optionally via the `JULIA_PACKAGES` build-arg)
 ARG JULIA_PACKAGES="CSV"
 ENV JULIA_PACKAGES="$JULIA_PACKAGES"

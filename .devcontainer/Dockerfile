@@ -46,6 +46,8 @@ RUN wget -q https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-${JULIA_
 # Use a shared Julia depot so packages/registries installed at build time are available to non-root users
 ENV JULIA_DEPOT_PATH=/usr/local/share/julia
 RUN mkdir -p ${JULIA_DEPOT_PATH} && chmod -R 0777 ${JULIA_DEPOT_PATH}
+ENV JULIA_HISTORY=/home/vscode/.julia/logs/repl_history.jl
+RUN mkdir -p /home/vscode/.julia/logs && chmod -R 0777 /home/vscode/.julia
 
 # Install common Julia packages (optionally via the `JULIA_PACKAGES` build-arg)
 ARG JULIA_PACKAGES="CSV"
@@ -53,6 +55,7 @@ ENV JULIA_PACKAGES="$JULIA_PACKAGES"
 RUN if [ -n "$JULIA_PACKAGES" ]; then \
             julia -e 'using Pkg; try Pkg.Registry.add(Pkg.RegistrySpec(url="https://github.com/JuliaRegistries/General.git")) catch end; pkgs = split(ENV["JULIA_PACKAGES"], ","); for p in pkgs; pn = strip(p); if pn != ""; Pkg.add(pn); end; end; Pkg.precompile()'; \
         fi
+RUN chmod -R a+rwX ${JULIA_DEPOT_PATH} /home/vscode/.julia
 
 # Create a writable R library directory for non-root users
 RUN mkdir -p /home/vscode/R && chmod 0777 /home/vscode/R || true

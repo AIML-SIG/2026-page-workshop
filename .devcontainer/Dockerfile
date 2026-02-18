@@ -1,3 +1,4 @@
+# Load the base image with R
 FROM ghcr.io/rocker-org/devcontainer/r-ver:4
 
 USER root
@@ -13,6 +14,27 @@ RUN apt-get update \
        libpng-dev libjpeg-dev git python3-pip python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
+## Optionally install R packages at build time via the `R_PACKAGES` build-arg (comma-separated)
+#ARG R_PACKAGES="ggplot2"
+#ENV R_PACKAGES="$R_PACKAGES"
+#RUN if [ -n "$R_PACKAGES" ]; then \
+#      R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); pkgs <- strsplit(Sys.getenv('R_PACKAGES'), ',')[[1]]; install.packages(trimws(pkgs), dependencies=TRUE)"; \
+#    fi
+
+## Install Python into a virtual environment to avoid PEP 668 errors
+#RUN python3 -m venv /opt/venv \
+#    && /opt/venv/bin/python -m pip install --no-cache-dir --upgrade pip setuptools wheel
+
+## Optionally install Python packages at build time via the `PYTHON_PACKAGES` build-arg (comma-separated)
+#ARG PYTHON_PACKAGES="numpy"
+#ENV PYTHON_PACKAGES="$PYTHON_PACKAGES"
+#RUN if [ -n "$PYTHON_PACKAGES" ]; then \
+#      PKGS=$(echo "$PYTHON_PACKAGES" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed '/^$/d' | tr '\n' ' '); \
+#      if [ -n "$PKGS" ]; then /opt/venv/bin/python -m pip install --no-cache-dir $PKGS; fi; \
+#    fi
+
+#ENV PATH="/opt/venv/bin:${PATH}"
+
 # Install Julia (binary)
 ARG JULIA_VERSION=1.10.0
 RUN wget -q https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-${JULIA_VERSION}-linux-x86_64.tar.gz \
@@ -20,20 +42,6 @@ RUN wget -q https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-${JULIA_
     && mv julia-${JULIA_VERSION} /opt/julia \
     && ln -s /opt/julia/bin/julia /usr/local/bin/julia \
     && rm julia-${JULIA_VERSION}-linux-x86_64.tar.gz
-
-# Install Python packages into a virtual environment to avoid PEP 668 errors
-RUN python3 -m venv /opt/venv \
-    && /opt/venv/bin/python -m pip install --no-cache-dir --upgrade pip setuptools wheel \
-    && /opt/venv/bin/python -m pip install --no-cache-dir numpy pandas scipy matplotlib seaborn scikit-learn statsmodels jupyter jupyterlab ipywidgets
-
-ENV PATH="/opt/venv/bin:${PATH}"
-
-# Optionally install R packages at build time via the `R_PACKAGES` build-arg (comma-separated)
-ARG R_PACKAGES="ggplot2,dplyr"
-ENV R_PACKAGES="$R_PACKAGES"
-RUN if [ -n "$R_PACKAGES" ]; then \
-      R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); pkgs <- strsplit(Sys.getenv('R_PACKAGES'), ',')[[1]]; install.packages(trimws(pkgs), dependencies=TRUE)"; \
-    fi
 
 # Install common Julia packages (optionally via the `JULIA_PACKAGES` build-arg)
 ARG JULIA_PACKAGES="CSV"

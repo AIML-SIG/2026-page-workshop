@@ -12,12 +12,7 @@
         "reditorsupport.r",
         "rdebugger.r-debugger",
         "quarto.quarto"
-      ],
-      "settings": {
-        "python.defaultInterpreterPath": "/opt/venv/bin/python",
-        "python.formatting.provider": "black",
-        "julia.executablePath": "/usr/local/bin/julia"
-      }
+      ]
     }
   }
 }

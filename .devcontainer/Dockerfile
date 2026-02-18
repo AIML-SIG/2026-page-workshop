@@ -45,6 +45,8 @@ RUN wget -q https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-${JULIA_
 
 # Use a shared Julia depot so packages/registries installed at build time are available to non-root users
 ENV JULIA_DEPOT_PATH=/usr/local/share/julia
+ENV JULIA_PKG_PRECOMPILE_AUTO=0
+ENV JULIA_CPU_TARGET=generic
 RUN mkdir -p ${JULIA_DEPOT_PATH} && chmod -R 0777 ${JULIA_DEPOT_PATH}
 ENV JULIA_HISTORY=/home/vscode/.julia/logs/repl_history.jl
 RUN mkdir -p /home/vscode/.julia/logs && chmod -R 0777 /home/vscode/.julia
@@ -52,9 +54,13 @@ RUN mkdir -p /home/vscode/.julia/logs && chmod -R 0777 /home/vscode/.julia
 # Install common Julia packages (optionally via the `JULIA_PACKAGES` build-arg)
 ARG JULIA_PACKAGES="CSV"
 ENV JULIA_PACKAGES="$JULIA_PACKAGES"
+RUN mkdir -p /opt/course-julia
+RUN julia -e 'using Pkg; Pkg.activate("/opt/course-julia"); try Pkg.Registry.add(Pkg.RegistrySpec(url="https://github.com/JuliaRegistries/General.git")) catch end; pkgs = split(ENV["JULIA_PACKAGES"], ","); addpkgs = String[]; for p in pkgs; pn = strip(p); if pn != ""; push!(addpkgs, pn); end; end; push!(addpkgs, "PackageCompiler"); if !isempty(addpkgs); Pkg.add(addpkgs); end; Pkg.precompile()'
 RUN if [ -n "$JULIA_PACKAGES" ]; then \
-            julia -e 'using Pkg; try Pkg.Registry.add(Pkg.RegistrySpec(url="https://github.com/JuliaRegistries/General.git")) catch end; pkgs = split(ENV["JULIA_PACKAGES"], ","); for p in pkgs; pn = strip(p); if pn != ""; Pkg.add(pn); end; end; Pkg.precompile()'; \
+            julia -e 'using Pkg; Pkg.activate("/opt/course-julia"); using PackageCompiler; pkgs = Symbol[]; for p in split(ENV["JULIA_PACKAGES"], ","); pn = strip(p); if pn != ""; push!(pkgs, Symbol(pn)); end; end; if !isempty(pkgs); create_sysimage(pkgs; sysimage_path="/opt/julia/course.so"); end'; \
         fi
+RUN if [ ! -f /opt/julia/course.so ]; then cp /opt/julia/lib/julia/sys.so /opt/julia/course.so; fi
+RUN printf '%s\n' '#!/usr/bin/env bash' 'exec /opt/julia/bin/julia --project=/opt/course-julia -J/opt/julia/course.so "$@"' > /usr/local/bin/julia && chmod +x /usr/local/bin/julia
 RUN chmod -R a+rwX ${JULIA_DEPOT_PATH} /home/vscode/.julia
 
 # Create a writable R library directory for non-root users

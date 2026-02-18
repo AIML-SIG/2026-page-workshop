@@ -14,12 +14,12 @@ RUN apt-get update \
        libpng-dev libjpeg-dev git python3-pip python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
-## Optionally install R packages at build time via the `R_PACKAGES` build-arg (comma-separated)
-#ARG R_PACKAGES="ggplot2"
-#ENV R_PACKAGES="$R_PACKAGES"
-#RUN if [ -n "$R_PACKAGES" ]; then \
-#      R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); pkgs <- strsplit(Sys.getenv('R_PACKAGES'), ',')[[1]]; install.packages(trimws(pkgs), dependencies=TRUE)"; \
-#    fi
+# Optionally install R packages at build time via the `R_PACKAGES` build-arg (comma-separated)
+ARG R_PACKAGES="ggplot2"
+ENV R_PACKAGES="$R_PACKAGES"
+RUN if [ -n "$R_PACKAGES" ]; then \
+      R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); pkgs <- strsplit(Sys.getenv('R_PACKAGES'), ',')[[1]]; install.packages(trimws(pkgs), dependencies=TRUE)"; \
+    fi
 
 ## Install Python into a virtual environment to avoid PEP 668 errors
 #RUN python3 -m venv /opt/venv \

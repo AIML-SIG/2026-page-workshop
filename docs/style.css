@@ -332,16 +332,21 @@ a:hover { text-decoration: underline; }
 }
 .person-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
 
-.person-photo {
+.person-photo-wrap {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
+  overflow: hidden;
   margin: 0 auto 14px;
   border: 3px solid var(--gray-200);
   flex-shrink: 0;
+}
+.person-photo-wrap img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
 }
 .person-card h3 { font-size: 1.05rem; color: var(--blue-dark); margin-bottom: 4px; }
 .person-affiliation { font-size: 0.83rem; color: var(--blue-light); font-weight: 600; margin-bottom: 10px; }

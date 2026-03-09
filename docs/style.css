@@ -326,17 +326,22 @@ a:hover { text-decoration: underline; }
   text-align: center;
   box-shadow: var(--shadow);
   transition: box-shadow 0.2s, transform 0.15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .person-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
 
 .person-photo {
-  width: 110px;
-  height: 110px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  object-position: top;
-  margin-bottom: 14px;
+  object-position: center top;
+  display: block;
+  margin: 0 auto 14px;
   border: 3px solid var(--gray-200);
+  flex-shrink: 0;
 }
 .person-card h3 { font-size: 1.05rem; color: var(--blue-dark); margin-bottom: 4px; }
 .person-affiliation { font-size: 0.83rem; color: var(--blue-light); font-weight: 600; margin-bottom: 10px; }

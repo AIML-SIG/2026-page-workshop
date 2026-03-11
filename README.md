@@ -1,3 +1,3 @@
 # A Glimpse into AI/ML Applications for Pharmacometrics
 
-Welcome to the hands-on session code for "A Glimpse into AI/ML Applications for Pharmacometrics" workshop at PAGE 2026.
+This repository contains the website source for the PAGE 2026 satellite workshop "A Glimpse into AI/ML Applications for Pharmacometrics," organized by the ISoP AI/ML Special Interest Group.

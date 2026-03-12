@@ -106,6 +106,18 @@ a:hover { text-decoration: underline; }
   text-decoration: none;
   transform: translateY(-1px);
 }
+.hero-contact {
+  margin-top: 12px;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.85);
+}
+.hero-contact a {
+  color: var(--white);
+  text-decoration: underline;
+}
+.hero-contact a:hover {
+  color: var(--accent-light, #ffd199);
+}
 
 /* ── STICKY NAV ─────────────────────────────────────────────────────── */
 .sticky-nav {

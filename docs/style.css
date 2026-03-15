@@ -366,6 +366,33 @@ a:hover { text-decoration: underline; }
   object-position: center top;
   display: block;
 }
+.organizers-grid {
+  grid-template-columns: repeat(5, 1fr);
+}
+.organizers-grid .person-photo-wrap,
+.organizers-grid .person-photo-wrap img {
+  width: 100px;
+  height: 100px;
+}
+.organizers-grid .person-photo-wrap {
+  margin: 16px 0;
+}
+
+.instructors-grid {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.instructors-grid .person-photo-wrap,
+.instructors-grid .person-photo-wrap img {
+  width: 100px;
+  height: 100px;
+}
+.instructors-grid .person-photo-wrap {
+  margin: 16px 0;
+}
+
 .person-card h3 { font-size: 1.05rem; color: var(--blue-dark); margin-bottom: 4px; }
 .person-affiliation { font-size: 0.83rem; color: var(--blue-light); font-weight: 600; margin-bottom: 10px; }
 .person-bio { font-size: 0.87rem; color: var(--gray-700); margin: 0; }

@@ -381,6 +381,8 @@ a:hover { text-decoration: underline; }
 .panelists-grid {
   grid-template-columns: repeat(3, 1fr);
   max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
 .panelists-grid .person-photo-wrap,
 .panelists-grid .person-photo-wrap img {
@@ -558,6 +560,21 @@ a:hover { text-decoration: underline; }
 .btn-jump-top:hover { background: #c96f08; text-decoration: none; transform: translateY(-1px); }
 
 /* ── RESPONSIVE ──────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .organizers-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .organizers-grid,
+  .panelists-grid,
+  .instructors-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 600px) {
   .time { min-width: 90px; font-size: 0.76rem; }
   .agenda-block { flex-direction: column; }

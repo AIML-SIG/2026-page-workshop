@@ -559,6 +559,21 @@ a:hover { text-decoration: underline; }
 }
 .btn-jump-top:hover { background: #c96f08; text-decoration: none; transform: translateY(-1px); }
 
+/* ── HYBRID NOTICE ───────────────────────────────────────────────────── */
+.hybrid-notice {
+  background: #eef6fb;
+  border-left: 4px solid #2d9cdb;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 12px 18px;
+  margin: 20px 0;
+  font-size: 0.92rem;
+  color: var(--gray-700);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.hybrid-notice .hybrid-icon { font-size: 1.15rem; flex-shrink: 0; line-height: 1.6; }
+
 /* ── RESPONSIVE ──────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .organizers-grid {
